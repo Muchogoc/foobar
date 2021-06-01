@@ -1,57 +1,41 @@
-# Tree traversal in Python
+def traverse(height, node):
+    nodes = 2 ** height - 1
+    root_node = nodes
+
+    if root_node == node:
+        return -1
+
+    # initialize parent node with initial root
+    parent_node = root_node
+    # next level after the root node
+    level = height - 1
+
+    while level > 0:
+
+        right_node = parent_node - 1
+        left_node = right_node - (2 ** level - 1)
+        print(
+            f"level: {level} \n {left_node} <- {parent_node} -> {right_node}"
+        )
+
+        # check if they're leafs of parent node
+        if (node == right_node) or (node == left_node):
+            return parent_node
+
+        # if current node greater than left node the parent is the right node
+        if node > left_node:
+            parent_node = right_node
+        else:
+            parent_node = left_node
+
+        # parent not found in current level recursively check next lower level
+        level -= 1
 
 
-class Node:
-    def __init__(self, item):
-        self.left = None
-        self.right = None
-        self.val = item
+def solution(h, q):
+    soln = []
 
+    for node in q:
+        soln.append(traverse(h, node))
 
-def inorder(root):
-
-    if root:
-        # Traverse left
-        inorder(root.left)
-        # Traverse root
-        print(str(root.val) + "->", end="")
-        # Traverse right
-        inorder(root.right)
-
-
-def postorder(root):
-
-    if root:
-        # Traverse left
-        postorder(root.left)
-        # Traverse right
-        postorder(root.right)
-        # Traverse root
-        print(str(root.val) + "->", end="")
-
-
-def preorder(root):
-
-    if root:
-        # Traverse root
-        print(str(root.val) + "->", end="")
-        # Traverse left
-        preorder(root.left)
-        # Traverse right
-        preorder(root.right)
-
-
-root = Node(1)
-root.left = Node(2)
-root.right = Node(3)
-root.left.left = Node(4)
-root.left.right = Node(5)
-
-print("Inorder traversal ")
-inorder(root)
-
-print("\nPreorder traversal ")
-preorder(root)
-
-print("\nPostorder traversal ")
-postorder(root)
+    return soln
